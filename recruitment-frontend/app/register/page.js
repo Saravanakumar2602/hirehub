@@ -11,7 +11,7 @@ export default function Register() {
         name: "",
         email: "",
         password: "",
-        role: "candidate" // Default role
+        role: "candidate"
     });
 
     const [error, setError] = useState("");
@@ -21,47 +21,50 @@ export default function Register() {
         setError("");
         try {
             await register(form);
-            // AuthContext will handle redirect
         } catch (err) {
             setError(err.response?.data?.message || "Registration failed");
         }
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <form onSubmit={handleSubmit} className="p-8 bg-white shadow-lg rounded-lg w-96">
-                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
+        <div className="flex justify-center items-center h-screen bg-[#09090b] relative overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-                {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+            <form onSubmit={handleSubmit} className="p-8 bg-zinc-900/50 backdrop-blur-xl border border-white/10 rounded-2xl w-96 relative z-10 shadow-2xl animate-in fade-in zoom-in duration-500">
+                <h2 className="text-2xl font-bold mb-2 text-center text-white tracking-tight">Create Account</h2>
+                <p className="text-zinc-500 text-center text-sm mb-6">Join the HireHub network</p>
+
+                {error && <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-2 rounded text-sm mb-4 text-center">{error}</div>}
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                    <label className="block text-zinc-400 text-xs font-bold mb-2 uppercase tracking-wider">Full Name</label>
                     <input
                         type="text"
                         placeholder="John Doe"
-                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        className="w-full p-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all text-white placeholder-zinc-700"
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         required
                     />
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <label className="block text-zinc-400 text-xs font-bold mb-2 uppercase tracking-wider">Email</label>
                     <input
                         type="email"
                         placeholder="john@example.com"
-                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        className="w-full p-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all text-white placeholder-zinc-700"
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
                         required
                     />
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <label className="block text-zinc-400 text-xs font-bold mb-2 uppercase tracking-wider">Password</label>
                     <input
                         type="password"
-                        placeholder="******"
-                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        placeholder="••••••"
+                        className="w-full p-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all text-white placeholder-zinc-700"
                         onChange={(e) => setForm({ ...form, password: e.target.value })}
                         required
                         minLength={6}
@@ -69,9 +72,9 @@ export default function Register() {
                 </div>
 
                 <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">I am a...</label>
+                    <label className="block text-zinc-400 text-xs font-bold mb-2 uppercase tracking-wider">I am a...</label>
                     <select
-                        className="w-full p-2 border border-blue-500 bg-blue-50 rounded focus:outline-none focus:ring-2 focus:ring-blue-200"
+                        className="w-full p-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:border-white/20 text-white"
                         value={form.role}
                         onChange={(e) => setForm({ ...form, role: e.target.value })}
                     >
@@ -80,12 +83,12 @@ export default function Register() {
                     </select>
                 </div>
 
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200">
+                <button className="w-full bg-white text-black font-bold py-3 px-4 rounded-lg hover:bg-zinc-200 transition duration-200 shadow-lg mb-4">
                     Sign Up
                 </button>
 
-                <p className="mt-4 text-center text-sm text-gray-600">
-                    Already have an account? <Link href="/login" className="text-blue-600 hover:underline">Login here</Link>
+                <p className="text-center text-sm text-zinc-500">
+                    Already have an account? <Link href="/login" className="text-white hover:underline transition-all">Login here</Link>
                 </p>
             </form>
         </div>

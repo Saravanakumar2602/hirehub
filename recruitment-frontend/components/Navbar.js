@@ -14,60 +14,72 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-white shadow-md sticky top-0 z-50">
-            <div className="container mx-auto px-4">
-                <div className="flex justify-between items-center h-16">
-                    {/* Logo */}
-                    <Link href="/" className="text-2xl font-bold text-blue-600">
-                        HireHub
+        <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 animate-in fade-in slide-in-from-top-4 duration-700">
+            <nav className="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full px-8 py-4 shadow-2xl flex items-center gap-8 max-w-5xl w-full justify-between transition-all hover:bg-black/60 hover:border-white/20">
+
+                {/* Logo */}
+                <Link href="/" className="text-xl font-bold tracking-tight bg-gradient-to-br from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent hover:to-white transition-all duration-500">
+                    HIREHUB
+                </Link>
+
+                {/* Desktop Menu */}
+                <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+                    <Link
+                        href="/jobs"
+                        className={`relative group hover:text-white transition-colors duration-300 ${pathname === '/jobs' ? 'text-white' : ''}`}
+                    >
+                        Find Jobs
+                        <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
                     </Link>
-
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-8">
+                    {user?.role === 'recruiter' && (
                         <Link
-                            href="/jobs"
-                            className={`text-gray-600 hover:text-blue-600 font-medium ${pathname === '/jobs' ? 'text-blue-600' : ''}`}
+                            href="/dashboard/recruiter"
+                            className="relative group hover:text-white transition-colors duration-300"
                         >
-                            Start Hiring / Find Jobs
+                            Post a Job
+                            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
                         </Link>
-
-                        {user ? (
-                            <div className="flex items-center space-x-4">
-                                <Link
-                                    href="/dashboard"
-                                    className={`text-gray-600 hover:text-blue-600 font-medium ${pathname === '/dashboard' ? 'text-blue-600' : ''}`}
-                                >
-                                    Dashboard
-                                </Link>
-                                <div className="px-3 py-1 rounded bg-blue-100 text-blue-800 text-sm font-semibold capitalize">
-                                    {user.role}
-                                </div>
-                                <button
-                                    onClick={logout}
-                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition"
-                                >
-                                    Logout
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="flex items-center space-x-4">
-                                <Link
-                                    href="/login"
-                                    className="text-gray-600 hover:text-blue-600 font-medium"
-                                >
-                                    Login
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition"
-                                >
-                                    Register
-                                </Link>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </div>
-            </div>
-        </nav>
+
+                {/* Auth Buttons */}
+                <div className="flex items-center gap-3">
+                    {user ? (
+                        <>
+                            <Link
+                                href="/dashboard"
+                                className={`relative group text-sm font-medium hover:text-white transition-colors duration-300 ${pathname === '/dashboard' ? 'text-white' : 'text-zinc-400'}`}
+                            >
+                                Dashboard
+                                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                            </Link>
+                            <div className="h-4 w-[1px] bg-white/10"></div>
+                            <button
+                                onClick={logout}
+                                className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors duration-300 hover:scale-105"
+                            >
+                                Sign Out
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                href="/login"
+                                className="text-sm font-medium text-zinc-300 hover:text-white transition-colors px-2 relative group"
+                            >
+                                Log In
+                                <span className="absolute -bottom-1 left-2 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-[calc(100%-16px)]"></span>
+                            </Link>
+                            <Link
+                                href="/register"
+                                className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-zinc-200 transition-all shadow-[0_0_10px_rgba(255,255,255,0.2)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95"
+                            >
+                                Join Now
+                            </Link>
+                        </>
+                    )}
+                </div>
+            </nav>
+        </div>
     );
 }
