@@ -2,25 +2,21 @@
 
 import { useEffect, useState } from "react";
 import API from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 
 export default function JobsPage() {
+    const { user } = useAuth();
+
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [location, setLocation] = useState("");
-    const [experience, setExperience] = useState("");
+    const [selectedJob, setSelectedJob] = useState(null);
+    const [resume, setResume] = useState(null);
 
     const fetchJobs = async () => {
         try {
             setLoading(true);
-
-            const params = new URLSearchParams();
-            if (location) params.append("location", location);
-            if (experience) params.append("experienceLevel", experience);
-
-            const query = params.toString();
-            const res = await API.get(`/jobs?${query}`);
+            const res = await API.get("/jobs");
             setJobs(res.data.jobs);
-
         } catch (error) {
             console.error(error);
         } finally {
@@ -30,45 +26,43 @@ export default function JobsPage() {
 
     useEffect(() => {
         fetchJobs();
-    }, []); // Initial load
+    }, []);
+
+    const handleApply = async (jobId) => {
+        if (!resume) {
+            alert("Please select a resume file");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("resume", resume);
+
+        try {
+            await API.post(`/applications/${jobId}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data" // Browser sets boundary automatically, but good to be explicit or let axios handle it
+                }
+            });
+
+            alert("Application submitted successfully!");
+            setSelectedJob(null);
+            setResume(null);
+
+        } catch (error) {
+            console.error(error);
+            const msg = error.response?.data?.message || "Error applying";
+            alert(msg);
+        }
+    };
 
     return (
         <div className="p-10 bg-gray-50 min-h-screen">
             <h1 className="text-3xl font-bold mb-8 text-gray-800">Available Jobs</h1>
 
-            {/* Filters */}
-            <div className="mb-8 flex flex-wrap gap-4 bg-white p-4 rounded-lg shadow-sm items-center">
-                <input
-                    placeholder="Location (e.g. Remote)"
-                    className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                />
-
-                <select
-                    className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={experience}
-                    onChange={(e) => setExperience(e.target.value)}
-                >
-                    <option value="">All Levels</option>
-                    <option value="junior">Junior</option>
-                    <option value="mid">Mid</option>
-                    <option value="senior">Senior</option>
-                </select>
-
-                <button
-                    onClick={fetchJobs}
-                    className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition duration-200"
-                >
-                    Filter
-                </button>
-            </div>
-
-            {/* Job List */}
             {loading ? (
                 <p className="text-gray-600">Loading jobs...</p>
             ) : jobs.length === 0 ? (
-                <p className="text-gray-600 italic">No jobs found matching your criteria.</p>
+                <p className="text-gray-600 italic">No jobs found.</p>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {jobs.map((job) => (
@@ -88,9 +82,52 @@ export default function JobsPage() {
                                 </p>
                             </div>
 
-                            <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-                                Apply Now
-                            </button>
+                            {user?.role === "candidate" ? (
+                                <div className="mt-4 pt-4 border-t border-gray-100">
+                                    {selectedJob === job._id ? (
+                                        <div className="space-y-3 animate-in fade-in slide-in-from-top-1 duration-200">
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Resume (PDF)</label>
+                                            <input
+                                                type="file"
+                                                accept="application/pdf"
+                                                className="block w-full text-sm text-slate-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-full file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-blue-50 file:text-blue-700
+                          hover:file:bg-blue-100
+                        "
+                                                onChange={(e) => setResume(e.target.files[0])}
+                                            />
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleApply(job._id)}
+                                                    className="flex-1 bg-green-600 text-white py-2 rounded hover:bg-green-700 transition font-medium"
+                                                >
+                                                    Submit Application
+                                                </button>
+                                                <button
+                                                    onClick={() => { setSelectedJob(null); setResume(null); }}
+                                                    className="px-3 py-2 text-gray-500 hover:text-gray-700"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={() => setSelectedJob(job._id)}
+                                            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition font-medium"
+                                        >
+                                            Apply Now
+                                        </button>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="mt-4 pt-4 border-t border-gray-100 text-center text-sm text-gray-500 italic">
+                                    {user ? "Login as Candidate to apply" : "Login to apply"}
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
