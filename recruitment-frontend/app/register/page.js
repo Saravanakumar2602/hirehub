@@ -73,14 +73,22 @@ export default function Register() {
 
                 <div className="mb-6">
                     <label className="block text-zinc-400 text-xs font-bold mb-2 uppercase tracking-wider">I am a...</label>
-                    <select
-                        className="w-full p-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:border-white/20 text-white"
-                        value={form.role}
-                        onChange={(e) => setForm({ ...form, role: e.target.value })}
-                    >
-                        <option value="candidate">Candidate (Job Seeker)</option>
-                        <option value="recruiter">Recruiter (Hiring)</option>
-                    </select>
+                    <div className="relative">
+                        <select
+                            className="w-full p-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:border-white/20 text-white appearance-none cursor-pointer hover:bg-zinc-900/50 transition-colors"
+                            value={form.role}
+                            onChange={(e) => setForm({ ...form, role: e.target.value })}
+                        >
+                            <option value="candidate" className="bg-zinc-900 text-white py-2">Candidate (Job Seeker)</option>
+                            <option value="recruiter" className="bg-zinc-900 text-white py-2">Recruiter (Hiring)</option>
+                        </select>
+                        {/* Custom Dropdown Arrow */}
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-500">
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <button className="w-full bg-white text-black font-bold py-3 px-4 rounded-lg hover:bg-zinc-200 transition duration-200 shadow-lg mb-4">

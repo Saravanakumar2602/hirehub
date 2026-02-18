@@ -163,15 +163,21 @@ export default function RecruiterDashboard() {
 
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Experience Level</label>
-                                <select
-                                    className="w-full bg-zinc-800/50 border border-white/10 p-3 rounded-xl text-white focus:outline-none focus:border-white/30 transition-colors appearance-none"
-                                    value={formData.experienceLevel}
-                                    onChange={e => setFormData({ ...formData, experienceLevel: e.target.value })}
-                                >
-                                    <option value="junior" className="bg-zinc-900">Junior</option>
-                                    <option value="mid" className="bg-zinc-900">Mid-Level</option>
-                                    <option value="senior" className="bg-zinc-900">Senior</option>
-                                </select>
+                                <div className="relative">
+                                    <select
+                                        className="w-full bg-zinc-800/50 border border-white/10 p-3 rounded-xl text-white focus:outline-none focus:border-white/30 transition-colors appearance-none cursor-pointer hover:bg-zinc-800"
+                                        value={formData.experienceLevel}
+                                        onChange={e => setFormData({ ...formData, experienceLevel: e.target.value })}
+                                    >
+                                        <option value="junior" className="bg-zinc-900 text-white py-2">Junior</option>
+                                        <option value="mid" className="bg-zinc-900 text-white py-2">Mid-Level</option>
+                                        <option value="senior" className="bg-zinc-900 text-white py-2">Senior</option>
+                                    </select>
+                                    {/* Custom Dropdown Arrow */}
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <ChevronRight className="w-5 h-5 text-zinc-500 rotate-90" />
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="md:col-span-2 space-y-2">
