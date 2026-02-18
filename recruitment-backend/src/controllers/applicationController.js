@@ -55,3 +55,13 @@ export const updateApplicationStatus = asyncHandler(async (req, res) => {
         application
     });
 });
+
+export const getMyApplications = asyncHandler(async (req, res) => {
+    const applications = await Application.find({
+        candidate: req.user._id
+    })
+        .populate("job")
+        .sort({ createdAt: -1 });
+
+    res.json(applications);
+});

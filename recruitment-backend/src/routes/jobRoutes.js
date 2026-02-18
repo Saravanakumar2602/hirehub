@@ -3,7 +3,8 @@ import {
     createJob,
     getJobs,
     getJobById,
-    deleteJob
+    deleteJob,
+    getMyJobs
 } from "../controllers/jobController.js";
 import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 
@@ -23,6 +24,12 @@ router.post(
     createJob
 );
 router.get("/", getJobs);
+router.get(
+    "/my",
+    protect,
+    authorizeRoles("recruiter"),
+    getMyJobs
+);
 router.get("/:id", getJobById);
 router.delete("/:id", protect, authorizeRoles("recruiter"), deleteJob);
 

@@ -32,18 +32,34 @@ export default function Dashboard() {
                     <h2 className="font-bold text-green-700 mb-2">Recruiter Panel</h2>
                     <p className="text-sm text-green-600">Post jobs and manage applications.</p>
                     <div className="mt-4 flex gap-4">
-                        <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Create Job</button>
-                        <button className="bg-white border border-green-600 text-green-600 px-4 py-2 rounded hover:bg-green-50 transition">View Applications</button>
-                    </div>
-                </div>
+                        <button
+                            onClick={() => router.push('/dashboard/recruiter')}
+                            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                        >
+                            Go to Recruiter Dashboard
+                        </button>
+                        {/* <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Create Job</button> */}
+                        {/* <button className="bg-white border border-green-600 text-green-600 px-4 py-2 rounded hover:bg-green-50 transition">View Applications</button> */}
+                    </div>                </div>
             )}
 
             {user.role === "candidate" && (
                 <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
                     <h2 className="font-bold text-blue-700 mb-2">Candidate Panel</h2>
                     <p className="text-sm text-blue-600">Browse jobs and track your applications.</p>
-                    <div className="mt-4">
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" onClick={() => router.push('/jobs')}>Browse Jobs</button>
+                    <div className="mt-4 flex gap-4">
+                        <button
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                            onClick={() => router.push('/jobs')}
+                        >
+                            Browse Jobs
+                        </button>
+                        <button
+                            className="bg-white border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-50 transition"
+                            onClick={() => router.push('/dashboard/candidate')}
+                        >
+                            My Applications
+                        </button>
                     </div>
                 </div>
             )}

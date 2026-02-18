@@ -2,7 +2,8 @@ import express from "express";
 import {
     applyToJob,
     getApplicationsForJob,
-    updateApplicationStatus
+    updateApplicationStatus,
+    getMyApplications
 } from "../controllers/applicationController.js";
 import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/uploadMiddleware.js";
@@ -32,6 +33,13 @@ router.put(
     protect,
     authorizeRoles("recruiter"),
     updateApplicationStatus
+);
+
+router.get(
+    "/my",
+    protect,
+    authorizeRoles("candidate"),
+    getMyApplications
 );
 
 export default router;

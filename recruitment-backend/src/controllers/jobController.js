@@ -63,6 +63,13 @@ export const getJobById = async (req, res) => {
     }
 };
 
+export const getMyJobs = asyncHandler(async (req, res) => {
+    const jobs = await Job.find({ recruiter: req.user._id })
+        .sort({ createdAt: -1 });
+
+    res.json(jobs);
+});
+
 export const deleteJob = async (req, res) => {
     try {
         const job = await Job.findById(req.params.id);
