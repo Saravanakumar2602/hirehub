@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: hirehub-backend
+    env: node
+    plan: free
+    branch: main
+    rootDir: recruitment-backend
+    buildCommand: npm install
+    startCommand: node src/server.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        value: http://localhost:3000
