@@ -166,7 +166,3 @@ Project Link: [https://github.com/Saravanakumar2602/hirehub](https://github.com/
 Live Demo: [https://hirehub-app-blush.vercel.app/](https://hirehub-app-blush.vercel.app/)
 
 ---
-
-<p align="center">
-  Built with ❤️ by <a href="https://github.com/Saravanakumar2602">Saravanakumar2602</a>
-</p>
